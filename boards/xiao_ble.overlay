@@ -1,0 +1,35 @@
+/*
+ * Copyright (c) 2019 Peter Bigot Consulting, LLC
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+// Delete the current storage partition since we are defining our own.
+/delete-node/ &storage_partition;
+
+&qspi {
+    p25q16h: p25q16h@0 {
+		writeoc = "pp4o";
+		readoc = "read4io";
+        sck-frequency = <104000000>;
+		partitions {
+			compatible = "fixed-partitions";
+			#address-cells = <1>;
+			#size-cells = <1>;
+
+			storage_partition: partition@0 {
+				label = "storage";
+				reg = <0x00000000 DT_SIZE_M(2)>;
+			};
+		};
+    };
+};
+
+/ {
+	msc_disk0 {
+		compatible = "zephyr,flash-disk";
+		partition = <&storage_partition>;
+		disk-name = "NAND";
+		cache-size = <4096>;
+	};
+};
