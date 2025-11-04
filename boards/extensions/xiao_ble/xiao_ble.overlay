@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-// Delete the current storage partition since we are defining our own.
-/delete-node/ &storage_partition;
 
 &qspi {
     p25q16h: p25q16h@0 {
@@ -17,8 +15,8 @@
 			#address-cells = <1>;
 			#size-cells = <1>;
 
-			storage_partition: partition@0 {
-				label = "storage";
+			external_partition: partition@0 {
+				label = "external";
 				reg = <0x00000000 DT_SIZE_M(2)>;
 			};
 		};
@@ -28,7 +26,7 @@
 / {
 	msc_disk0 {
 		compatible = "zephyr,flash-disk";
-		partition = <&storage_partition>;
+		partition = <&external_partition>;
 		disk-name = "NAND";
 		cache-size = <4096>;
 	};
